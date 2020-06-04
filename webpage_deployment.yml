@@ -1,60 +1,39 @@
-apiVersion: v1
+ apiVersion: v1
 kind: Service
 metadata:
-  name: webpage
+  name: my-service
   labels:
-    app: webpage
+    app: webapp
 spec:
-  ports:
-    - port: 80
   selector:
-    app: webpage
-    tier: frontend
-  type: LoadBalancer
+    app: webapp
+  type: NodePort
+  ports:
+    - nodePort: 31321
+      port: 81
+      targetPort: 80
+
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: wp-pv-claim
-  labels:
-    app: webpage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 2Gi
----
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+apiVersion: apps/v1
 kind: Deployment
+
 metadata:
-  name: webpage
+  name: myweb-deploy
   labels:
-    app: webpage
+    app: webapp
 spec:
+  replicas: 2
   selector:
     matchLabels:
-      app: webpage
-      tier: frontend
-  strategy:
-    type: Recreate
+      app: webapp
   template:
     metadata:
+      name: myweb-image
       labels:
-        app: webpage
-        tier: frontend
+        app: webapp
     spec:
       containers:
-      - image: sulekha02112001/httpd-webserver:v2
-        name: webpage
-        ports:
-        - containerPort: 80
-          name: webpage
-        volumeMounts:
-        - name: webpage-persistent-volume 
-          mountPath: /var/www/html
-      volumes:
-      - name: webpage-persistent-volume
-        persistentVolumeClaim:
-          claimName: wp-pv-claim
+      - name: myweb-image
+        image: sulekha02112001/httpd-webserver:v2
+        
 
