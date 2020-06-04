@@ -12,7 +12,6 @@ spec:
     - nodePort: 31321
       port: 81
       targetPort: 80
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,4 +35,3 @@ spec:
       - name: myweb-image
         image: sulekha02112001/httpd-webserver:v2
         
-
