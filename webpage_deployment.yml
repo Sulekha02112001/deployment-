@@ -45,7 +45,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - image: sulekha02112001/httpd-webserver:v3
+      - image: sulekha02112001/httpd-webserver:v2
         name: webpage
         ports:
         - containerPort: 80
